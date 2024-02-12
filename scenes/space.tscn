@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://8vkfjw5w05er"]
+
+[ext_resource type="PackedScene" uid="uid://dgw8qw4qrayjn" path="res://scenes/asteroid.tscn" id="1_empm6"]
+[ext_resource type="Script" path="res://scenes/space.gd" id="1_oibin"]
+[ext_resource type="Texture2D" uid="uid://t5n5fdtcf6vv" path="res://assets/SpaceBackground2.png" id="2_rrifb"]
+[ext_resource type="PackedScene" uid="uid://blpu5qny7e604" path="res://scenes/ship.tscn" id="3_ih41q"]
+[ext_resource type="Script" path="res://scenes/camera.gd" id="4_27aw6"]
+[ext_resource type="FontFile" uid="uid://db8mjsa7ibkcu" path="res://assets/Kenney Mini Square.ttf" id="5_fbx2a"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_jnr00"]
+font = ExtResource("5_fbx2a")
+
+[node name="Space" type="Node2D"]
+script = ExtResource("1_oibin")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -10
+texture_repeat = 2
+position = Vector2(-8261, -8228)
+texture = ExtResource("2_rrifb")
+centered = false
+region_enabled = true
+region_rect = Rect2(0, 0, 20000, 20000)
+
+[node name="Asteroid" parent="." instance=ExtResource("1_empm6")]
+position = Vector2(1013, 232)
+mass = 10.0
+asteroid_radius = 500.0
+
+[node name="Ship" parent="." instance=ExtResource("3_ih41q")]
+position = Vector2(291, 369)
+
+[node name="Camera2D" type="Camera2D" parent="Ship"]
+rotation_smoothing_enabled = true
+script = ExtResource("4_27aw6")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="DebugText" type="Label" parent="CanvasLayer"]
+visible = false
+offset_right = 54.0
+offset_bottom = 23.0
+text = "Debug:
+"
+label_settings = SubResource("LabelSettings_jnr00")
