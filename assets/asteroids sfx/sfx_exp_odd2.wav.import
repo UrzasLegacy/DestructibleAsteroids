@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dsajoo8iolkf4"
+path="res://.godot/imported/sfx_exp_odd2.wav-0ff7e6a7dd31ce4bfc8fe20460236daa.sample"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/sfx_exp_odd2.wav"
+dest_files=["res://.godot/imported/sfx_exp_odd2.wav-0ff7e6a7dd31ce4bfc8fe20460236daa.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

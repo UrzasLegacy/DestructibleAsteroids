@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cqawh215klykj"
+path="res://.godot/imported/sci fi hit 4.wav-53b64469c821eff2c95b9b9442563f24.sample"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/sci fi hit 4.wav"
+dest_files=["res://.godot/imported/sci fi hit 4.wav-53b64469c821eff2c95b9b9442563f24.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

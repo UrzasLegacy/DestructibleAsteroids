@@ -18,15 +18,19 @@ config/icon="res://icon.svg"
 [autoload]
 
 Events="*res://scripts/events.gd"
+SFX="*res://scripts/globals/sfx_player.tscn"
 
 [display]
 
 window/size/always_on_top=true
+mouse_cursor/custom_image="res://assets/crosshairs/crosshair102.png"
+mouse_cursor/custom_image_hotspot=Vector2(36, 36)
 
 [file_customization]
 
 folder_colors={
-"res://scenes/": "yellow"
+"res://assets/": "red",
+"res://scenes/": "orange"
 }
 
 [input]

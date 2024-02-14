@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dovvj83lg667l"
+path="res://.godot/imported/Laser3.wav-58684cec16277a691309c3cd576d200c.sample"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/ship/Laser3.wav"
+dest_files=["res://.godot/imported/Laser3.wav-58684cec16277a691309c3cd576d200c.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

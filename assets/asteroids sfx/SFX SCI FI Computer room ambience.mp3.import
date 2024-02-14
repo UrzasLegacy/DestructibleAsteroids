@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://df1o33tq3lphb"
+path="res://.godot/imported/SFX SCI FI Computer room ambience.mp3-67df39f33f4704bfbffd53cf045f786e.mp3str"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/SFX SCI FI Computer room ambience.mp3"
+dest_files=["res://.godot/imported/SFX SCI FI Computer room ambience.mp3-67df39f33f4704bfbffd53cf045f786e.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=5.0
+bpm=0.0
+beat_count=0
+bar_beats=4

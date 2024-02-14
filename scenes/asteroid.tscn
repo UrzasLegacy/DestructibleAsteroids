@@ -1,9 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://dgw8qw4qrayjn"]
+[gd_scene load_steps=12 format=3 uid="uid://dgw8qw4qrayjn"]
 
 [ext_resource type="Script" path="res://scenes/asteroid.gd" id="1_uayqt"]
 [ext_resource type="FontFile" uid="uid://db8mjsa7ibkcu" path="res://assets/Kenney Mini Square.ttf" id="2_eraux"]
 [ext_resource type="PackedScene" uid="uid://bdv2gvk8p531h" path="res://marker.tscn" id="3_2o220"]
+[ext_resource type="AudioStream" uid="uid://c7qqrmdd0vmxh" path="res://assets/asteroids sfx/impacts/Impact2.ogg" id="3_khhlh"]
 [ext_resource type="Texture2D" uid="uid://cyh2pl6lbixgn" path="res://icon.svg" id="4_wh2js"]
+[ext_resource type="AudioStream" uid="uid://dbkg35m7p1p3r" path="res://assets/asteroids sfx/booms/Boom1.ogg" id="7_pgete"]
+[ext_resource type="AudioStream" uid="uid://b11od61j3jkyt" path="res://assets/asteroids sfx/impacts/Impact8.ogg" id="9_j802q"]
+[ext_resource type="AudioStream" uid="uid://cwdbufx226uk3" path="res://assets/asteroids sfx/impacts/Impact9.wav" id="10_ffqyk"]
+[ext_resource type="AudioStream" uid="uid://tjrhfk11o851" path="res://assets/asteroids sfx/impacts/Impact10.ogg" id="11_47l53"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qlnsc"]
 
@@ -13,11 +18,15 @@ font_size = 20
 
 [node name="Asteroid" type="RigidBody2D" groups=["asteroids"]]
 input_pickable = true
-mass = 100.0
 physics_material_override = SubResource("PhysicsMaterial_qlnsc")
 center_of_mass_mode = 1
 linear_damp = 1.0
 script = ExtResource("1_uayqt")
+asteroid_impact2 = ExtResource("3_khhlh")
+asteroid_impact8 = ExtResource("9_j802q")
+asteroid_impact9 = ExtResource("10_ffqyk")
+asteroid_impact10 = ExtResource("11_47l53")
+boom1 = ExtResource("7_pgete")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 color = Color(0.184314, 0.184314, 0.184314, 1)
@@ -38,9 +47,15 @@ closed = true
 width = 1.0
 
 [node name="Marker" parent="." instance=ExtResource("3_2o220")]
+visible = false
+
+[node name="Marker2" parent="." instance=ExtResource("3_2o220")]
+visible = false
+color = Color(0.909804, 0.858824, 0.898039, 1)
 
 [node name="LabelArea" type="Label" parent="."]
 unique_name_in_owner = true
+visible = false
 z_index = 11
 anchors_preset = 8
 anchor_left = 0.5
@@ -62,6 +77,7 @@ vertical_alignment = 1
 
 [node name="LabelMassKG" type="Label" parent="."]
 unique_name_in_owner = true
+visible = false
 z_index = 11
 anchors_preset = 8
 anchor_left = 0.5

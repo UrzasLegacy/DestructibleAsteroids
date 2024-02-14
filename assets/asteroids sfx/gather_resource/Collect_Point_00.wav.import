@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cw2pjxpu6yxg6"
+path="res://.godot/imported/Collect_Point_00.wav-ac843fe6890edfeba58715ef6e4988fe.sample"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/gather_resource/Collect_Point_00.wav"
+dest_files=["res://.godot/imported/Collect_Point_00.wav-ac843fe6890edfeba58715ef6e4988fe.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d08x6np3nnq2x"
+path="res://.godot/imported/impactMining_004.ogg-7c265b9b10809a19ad89ffb43db4fdbe.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/gather_resource/impactMining_004.ogg"
+dest_files=["res://.godot/imported/impactMining_004.ogg-7c265b9b10809a19ad89ffb43db4fdbe.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

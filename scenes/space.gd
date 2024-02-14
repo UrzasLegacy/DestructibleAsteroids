@@ -21,21 +21,24 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			poly.visible = false
 		Events.debug_polygons.emit(false)
 
-func on_asteroid_died(polygon,pos):
+func on_asteroid_died(polygon,pos,rot):
 	var polygon_shape = Polygon2D.new()
 	add_child(polygon_shape)
 	polygon_shape.polygon = polygon
 	polygon_shape.color = Color("RED")
 	polygon_shape.global_position = pos
+	polygon_shape.rotation = rot
 	var tween = get_tree().create_tween()
 	tween.tween_property(polygon_shape,"modulate:a", 0.0, 0.2)
 	tween.tween_callback(polygon_shape.queue_free)
 
 
-func on_add_asteroid(polygon,pos,rot):
+func on_add_asteroid(polygon,pos,rot,lin_vel,ang_vel):
 	var add_asteroid = asteroid_scene.instantiate() as RigidBody2D
 	add_child(add_asteroid)
 	var center_point = find_midpoint(polygon)
+	add_asteroid.linear_velocity = lin_vel
+	add_asteroid.angular_velocity = ang_vel
 	add_asteroid.center_of_mass = center_point
 	add_asteroid.marker.position = center_point
 	add_asteroid.label_area.position = center_point
@@ -45,6 +48,7 @@ func on_add_asteroid(polygon,pos,rot):
 	add_asteroid.global_position = pos
 	add_asteroid.rotation = rot
 	add_asteroid.collision_polygon.set_deferred("polygon",polygon)
+
 
 func on_debug_text(array):
 	var out_txt = "Debug:\n"

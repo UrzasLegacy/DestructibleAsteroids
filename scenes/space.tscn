@@ -23,9 +23,19 @@ region_enabled = true
 region_rect = Rect2(0, 0, 20000, 20000)
 
 [node name="Asteroid" parent="." instance=ExtResource("1_empm6")]
-position = Vector2(1013, 232)
-mass = 10.0
+position = Vector2(-315, -666)
+mass = 50.0
+asteroid_radius = 250.0
+
+[node name="Asteroid2" parent="." instance=ExtResource("1_empm6")]
+position = Vector2(1548, 427)
+mass = 50.0
 asteroid_radius = 500.0
+
+[node name="Asteroid3" parent="." instance=ExtResource("1_empm6")]
+position = Vector2(-735, 691)
+mass = 50.0
+asteroid_radius = 250.0
 
 [node name="Ship" parent="." instance=ExtResource("3_ih41q")]
 position = Vector2(291, 369)

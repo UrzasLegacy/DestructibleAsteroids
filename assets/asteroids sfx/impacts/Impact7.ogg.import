@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bhhntt55ex88j"
+path="res://.godot/imported/Impact7.ogg-50cd01c8ed71357c77b4876cfcbfa8b2.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/impacts/Impact7.ogg"
+dest_files=["res://.godot/imported/Impact7.ogg-50cd01c8ed71357c77b4876cfcbfa8b2.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

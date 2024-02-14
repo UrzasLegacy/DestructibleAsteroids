@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dbkg35m7p1p3r"
+path="res://.godot/imported/Boom1.ogg-36c4af7fd175482376c3c74cfda67f1b.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/booms/Boom1.ogg"
+dest_files=["res://.godot/imported/Boom1.ogg-36c4af7fd175482376c3c74cfda67f1b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

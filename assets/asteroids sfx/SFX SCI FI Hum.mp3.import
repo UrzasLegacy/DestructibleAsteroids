@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dv74nkiqq4ke8"
+path="res://.godot/imported/SFX SCI FI Hum.mp3-fddf9d82b872106f6ff3b2e8fa1912e5.mp3str"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/SFX SCI FI Hum.mp3"
+dest_files=["res://.godot/imported/SFX SCI FI Hum.mp3-fddf9d82b872106f6ff3b2e8fa1912e5.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

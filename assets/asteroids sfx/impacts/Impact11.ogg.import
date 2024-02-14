@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b3ds0tasmjpo8"
+path="res://.godot/imported/Impact11.ogg-3a3a5053363877028ae615e3d4cd2426.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/impacts/Impact11.ogg"
+dest_files=["res://.godot/imported/Impact11.ogg-3a3a5053363877028ae615e3d4cd2426.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

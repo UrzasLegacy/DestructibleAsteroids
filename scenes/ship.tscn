@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://blpu5qny7e604"]
+[gd_scene load_steps=4 format=3 uid="uid://blpu5qny7e604"]
 
 [ext_resource type="Script" path="res://ship.gd" id="1_10wkq"]
+[ext_resource type="AudioStream" uid="uid://bj56drrcxe0ml" path="res://assets/asteroids sfx/ship/Laser1.wav" id="2_2ngol"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ow6jw"]
 
@@ -11,6 +12,7 @@ can_sleep = false
 linear_damp = 2.0
 angular_damp = 2.0
 script = ExtResource("1_10wkq")
+laser_sound1 = ExtResource("2_2ngol")
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
 polygon = PackedVector2Array(-8, -7, -8, 7, 12, 0)
@@ -21,3 +23,7 @@ polygon = PackedVector2Array(-8, -7, -8, 7, 12, 0)
 
 [node name="ProjectilePosition" type="Marker2D" parent="."]
 position = Vector2(13, 0)
+
+[node name="WeaponCooldown" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://cwdbufx226uk3"
+path="res://.godot/imported/Impact9.wav-47a9780e7fc76ff5a0d0801075f7b084.sample"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/impacts/Impact9.wav"
+dest_files=["res://.godot/imported/Impact9.wav-47a9780e7fc76ff5a0d0801075f7b084.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0

@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://b15x5isuv4abi"
+path="res://.godot/imported/Pew__009.wav-51b233bf0027bfec69b091f3bd06f998.sample"
+
+[deps]
+
+source_file="res://assets/asteroids sfx/Pew__009.wav"
+dest_files=["res://.godot/imported/Pew__009.wav-51b233bf0027bfec69b091f3bd06f998.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
