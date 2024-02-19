@@ -17,7 +17,6 @@ font = ExtResource("2_eraux")
 font_size = 20
 
 [node name="Asteroid" type="RigidBody2D" groups=["asteroids"]]
-input_pickable = true
 physics_material_override = SubResource("PhysicsMaterial_qlnsc")
 center_of_mass_mode = 1
 linear_damp = 1.0
@@ -44,7 +43,7 @@ visible = false
 
 [node name="Line2D" type="Line2D" parent="."]
 closed = true
-width = 1.0
+width = 4.0
 
 [node name="Marker" parent="." instance=ExtResource("3_2o220")]
 visible = false

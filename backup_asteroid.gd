@@ -25,7 +25,7 @@ func find_midpoint(vertices):
 	return sum / vertices.size()
 
 func _physics_process(_delta: float):
-	var area = polygon_area(asteroid_polygon.polygon)
+	var area = polygon_area_centroid(asteroid_polygon.polygon)
 	label.text = str(round(area))
 	if area < 1000:
 		queue_free.call_deferred()
@@ -68,7 +68,7 @@ func hit(projectile_position: Vector2):
 
 	for i in new_asteroids.size():
 		var new_asteroid: PackedVector2Array = new_asteroids[i]
-		var area_check = polygon_area(new_asteroid)
+		var area_check = polygon_area_centroid(new_asteroid)
 		var enclosed_hole_check = Geometry2D.is_polygon_clockwise(new_asteroid)
 		if i == 0: # update origin asteroid rather than respawning it
 			if enclosed_hole_check or area_check < MINIMUM_AREA_THRESHOLD:
@@ -132,7 +132,7 @@ func rotate_vertices_around_point(vertices, angle, origin):
 		rotated_vertices.append(rotated_vertex)
 	return rotated_vertices
 
-func polygon_area(vertices: PackedVector2Array):
+func polygon_area_centroid(vertices: PackedVector2Array):
 	#vertices = Geometry2D.convex_hull(vertices)
 	var num_vertices = len(vertices)
 	var area = 0.0

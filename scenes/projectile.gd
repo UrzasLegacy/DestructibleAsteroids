@@ -3,18 +3,17 @@ extends Area2D
 const SPEED := 500
 
 var shapes: Array
-@onready var radial_impulse: RadialImpulse2D = $RadialImpulse
+@onready var off_screen_death_timer: Timer = %OffScreenDeathTimer
 
 @onready var direction: Vector2 = Vector2.RIGHT
 
 func _ready():
-	radial_impulse.impulse_applied.connect(on_impulse_applied)
+	#radial_impulse.impulse_applied.connect(on_impulse_applied)
+	off_screen_death_timer.timeout.connect(queue_free)
 
 func _physics_process(delta: float) -> void:
 	global_position += direction * SPEED * delta
 
-func _on_visible_on_screen_enabler_2d_screen_exited() -> void:
-	queue_free()
 
 func generate_rand_polygon(min_sides = 4, max_sides = 8, radius = 5.0):
 	var num_sides = randi() % (max_sides - min_sides + 1) + min_sides
@@ -34,12 +33,17 @@ func generate_rand_polygon(min_sides = 4, max_sides = 8, radius = 5.0):
 
 
 func on_impulse_applied():
-	print('beep')
 	queue_free()
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("asteroids"):
-		body.hit(position,direction)
+		if body.can_be_hit:
+			body.hit(position,direction)
 		queue_free()
 
 		#radial_impulse.apply_impulse()
+
+
+func _on_visible_on_screen_notifier_2d_screen_exited() -> void:
+	if off_screen_death_timer.is_stopped():
+		off_screen_death_timer.start()

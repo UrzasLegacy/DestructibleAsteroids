@@ -9,7 +9,7 @@ class_name Asteroid extends RigidBody2D
 @export var asteroid_impact8: AudioStream
 @export var asteroid_impact9: AudioStream
 @export var asteroid_impact10: AudioStream
-
+@export var instanced_asteroid: bool = false
 @export var boom1: AudioStream
 
 
@@ -22,19 +22,20 @@ class_name Asteroid extends RigidBody2D
 @onready var label_area: Label = %LabelArea
 @onready var label_mass_kg: Label = %LabelMassKG
 
-const MINIMUM_AREA_THRESHOLD: int = 5000
-const IMPACT_IMPULSE_FORCE_SCALAR: int = 100
+const MINIMUM_AREA_THRESHOLD: int = 2000
+const IMPACT_IMPULSE_FORCE_SCALAR: int = 200
 
 @onready var area: float
 @onready var s1: Sprite2D = $Sprite2D
 @onready var s2: Sprite2D = $Sprite2D2
 @onready var s3: Sprite2D = $Sprite2D3
+@onready var can_be_hit: bool = true
+@onready var starting_mass: float = mass
 
 var show_debug_polygons := false
 var starting_area := 0.0
-var starting_mass: float = mass
 var center_point: Vector2
-var shatter_chance := 1
+var shatter_chance := 1#0.15
 
 var asteroid_impact_sounds: Array[AudioStream]
 
@@ -46,13 +47,17 @@ var boom_sounds: Array[String] = [
 	]
 
 func _ready():
+	if instanced_asteroid:
+		return
+
+	Events.debug_polygons.connect(on_debug_polygons)
+
 	asteroid_impact_sounds = [
 		asteroid_impact2,
 		asteroid_impact8,
 		asteroid_impact9,
 		asteroid_impact10
 		]
-	Events.debug_polygons.connect(on_debug_polygons)
 	var asteroid_array: PackedVector2Array = generate_rand_polygon(asteroid_min_sides, asteroid_max_sides, asteroid_radius)
 	center_point = find_midpoint(asteroid_array)
 	center_of_mass = center_point
@@ -62,14 +67,13 @@ func _ready():
 	polygon_2d_2.polygon = asteroid_array
 	asteroid_polygon.polygon = asteroid_array
 	area = polygon_area(asteroid_polygon.polygon)
-	starting_area = polygon_area(asteroid_polygon.polygon)
+	starting_area = area
 	line.points = asteroid_array
 	collision_polygon.set_deferred("polygon",asteroid_array)
 
 
 
 func _physics_process(_delta: float):
-	area = polygon_area(asteroid_polygon.polygon)
 	if not is_equal_approx(area,starting_area):
 		set_deferred('mass',max(starting_mass * (area / starting_area), 2))
 	label_area.text = str(round(area)) + " px"
@@ -78,17 +82,16 @@ func _physics_process(_delta: float):
 		#queue_free.call_deferred()
 
 func hit(impact_position: Vector2, impact_direction: Vector2):
-	var localized_impact_direction: Vector2 = rotate_direction(impact_direction,-rotation)
 	var impact_sound: AudioStream = asteroid_impact_sounds.pick_random()
 	SFX.play(impact_sound)
-	print(impact_sound.resource_path)
+	var localized_impact_direction: Vector2 = rotate_direction(impact_direction,-rotation)
 	var asteroid_position = global_position
 	var asteroid_rotation = global_rotation
 	var impact_asteroid_offset = impact_position - asteroid_position
 	var transformed_impact_position = transform.basis_xform_inv(impact_asteroid_offset)
 
 	var destructor_vertex_array: PackedVector2Array
-	destructor_vertex_array = generate_rand_polygon(3,8,30.0 * randf() + 100)
+	destructor_vertex_array = generate_rand_polygon(3,8,30.0 * randf() + 20)
 	destructor_vertex_array = translate_vertices(destructor_vertex_array, transformed_impact_position)
 	if randf() < shatter_chance:
 		var shatter_vertex_array = generate_random_line_polygon(transformed_impact_position,localized_impact_direction)
@@ -97,20 +100,32 @@ func hit(impact_position: Vector2, impact_direction: Vector2):
 	#add_debug_poly(destructor_vertex_array)
 
 	var new_asteroids = Geometry2D.clip_polygons(asteroid_polygon.polygon, destructor_vertex_array)
+	if new_asteroids.size() == 0:
+		SFX.play(boom1)
+		print('beep')
+		Events.asteroid_died.emit(asteroid_polygon.polygon,global_position,rotation)
+		queue_free()
+		return
+
+	#var og_asteroid = new_asteroids.pop_front()
+	#new_asteroids.push_back(og_asteroid)
 	apply_impulse(localized_impact_direction * IMPACT_IMPULSE_FORCE_SCALAR,transformed_impact_position)
+
 
 	for i in new_asteroids.size():
 		var new_asteroid: PackedVector2Array = new_asteroids[i]
-		var area_check = polygon_area(new_asteroid) < MINIMUM_AREA_THRESHOLD
 		var enclosed_hole_check = Geometry2D.is_polygon_clockwise(new_asteroid)
-		if i == 0: # update origin asteroid rather than respawning it
-			if enclosed_hole_check or area_check:
+
+		if i == 0 or new_asteroids.size() == 1: # update origin asteroid rather than respawning it
+			if polygon_area(new_asteroid) < MINIMUM_AREA_THRESHOLD:
 				SFX.play(boom1)
+
 				Events.asteroid_died.emit(asteroid_polygon.polygon,global_position,rotation)
-				queue_free.call_deferred()
-				continue
+				queue_free()
+				break
+			area = polygon_area_centroid(asteroid_polygon.polygon).area
 			marker_2.position = transformed_impact_position
-			highlight_poly(asteroid_polygon.polygon, destructor_vertex_array)
+			highlight_poly(asteroid_polygon.polygon, destructor_vertex_array,global_position)
 			asteroid_polygon.polygon = new_asteroid
 			center_point = find_midpoint(new_asteroid)
 			center_of_mass = center_point
@@ -120,18 +135,19 @@ func hit(impact_position: Vector2, impact_direction: Vector2):
 			line.points = new_asteroid
 			collision_polygon.set_deferred("polygon",new_asteroid)
 		else:
-			if enclosed_hole_check or area_check:
+			if enclosed_hole_check or polygon_area(new_asteroid) < MINIMUM_AREA_THRESHOLD:
 				continue
 			Events.add_asteroid.emit(new_asteroid,global_position,rotation,linear_velocity,angular_velocity)
 
 
-func highlight_poly(poly: PackedVector2Array,highlight_poly: PackedVector2Array):
-	var highlight_array = Geometry2D.intersect_polygons(poly, highlight_poly)
+func highlight_poly(poly: PackedVector2Array,highlight_polygon: PackedVector2Array,pos):
+	var highlight_array = Geometry2D.intersect_polygons(poly, highlight_polygon)
 	for highlight: PackedVector2Array in highlight_array:
 		if Geometry2D.is_polygon_clockwise(highlight):
 			continue
 		var polygon_shape = Polygon2D.new()
 		add_child(polygon_shape)
+		polygon_shape.global_position = pos
 		polygon_shape.polygon = highlight
 		polygon_shape.color = Color("RED")
 		var tween = get_tree().create_tween()
@@ -170,14 +186,53 @@ func translate_vertices(vertices: PackedVector2Array, offset: Vector2):
 	return PackedVector2Array(new_vals)
 
 func polygon_area(vertices: PackedVector2Array):
-	#vertices = Geometry2D.convex_hull(vertices)
-	var num_vertices = len(vertices)
-	var poly_area = 0.0
-	# Calculate the sum of (x_i * y_(i+1)) and (x_(i+1) * y_i) terms
+	var num_vertices: int = len(vertices)
+	var poly_area := 0.0
+	var poly_centroid := Vector2.ZERO
 	for i in range(num_vertices):
 		var j = (i + 1) % num_vertices  # Wraps around to the first vertex
-		poly_area += (vertices[i][0] * vertices[j][1]) - (vertices[j][0] * vertices[i][1])
-	return abs(poly_area / 2.0)
+		poly_area += (vertices[i].x * vertices[j].y) - (vertices[j].x * vertices[i].y)
+		poly_centroid.x += (pow(vertices[i].x, 2) + vertices[i].x * vertices[j].x + pow(vertices[j].x, 2)) * (vertices[j].y - vertices[i].y)
+		poly_centroid.y -= (pow(vertices[i].y, 2) + vertices[i].y * vertices[j].y + pow(vertices[j].y, 2)) * (vertices[j].x - vertices[i].x)
+	poly_area /= 2
+	return abs(poly_area)
+
+func polygon_centroid(vertices: PackedVector2Array):
+	var num_vertices: int = len(vertices)
+	var poly_area := 0.0
+	var poly_centroid := Vector2.ZERO
+	for i in range(num_vertices):
+		var j = (i + 1) % num_vertices  # Wraps around to the first vertex
+		poly_area += (vertices[i].x * vertices[j].y) - (vertices[j].x * vertices[i].y)
+		poly_centroid.x += (pow(vertices[i].x, 2) + vertices[i].x * vertices[j].x + pow(vertices[j].x, 2)) * (vertices[j].y - vertices[i].y)
+		poly_centroid.y -= (pow(vertices[i].y, 2) + vertices[i].y * vertices[j].y + pow(vertices[j].y, 2)) * (vertices[j].x - vertices[i].x)
+	poly_area /= 2
+	poly_centroid = poly_centroid / (6 * poly_area)
+	return poly_centroid
+
+func polygon_area_centroid(vertices: PackedVector2Array):
+	var num_vertices: int = len(vertices)
+	var poly_area := 0.0
+	var poly_centroid := Vector2.ZERO
+	for i in range(num_vertices):
+		var j = (i + 1) % num_vertices  # Wraps around to the first vertex
+		poly_area += (vertices[i].x * vertices[j].y) - (vertices[j].x * vertices[i].y)
+		poly_centroid.x += (pow(vertices[i].x, 2) + vertices[i].x * vertices[j].x + pow(vertices[j].x, 2)) * (vertices[j].y - vertices[i].y)
+		poly_centroid.y -= (pow(vertices[i].y, 2) + vertices[i].y * vertices[j].y + pow(vertices[j].y, 2)) * (vertices[j].x - vertices[i].x)
+	poly_area /= 2
+	poly_centroid = poly_centroid / (6 * poly_area)
+	return {
+		"area": abs(poly_area),
+		"centroid": poly_centroid
+		}
+
+func find_midpoint(vertices):
+	vertices = Geometry2D.convex_hull(vertices)
+	var sum = Vector2.ZERO
+	for vertex in vertices:
+		sum += vertex
+	return sum / vertices.size()
+
 
 func generate_rand_polygon(min_sides: int = 10, max_sides: int = 20, radius: float = 100.0):
 	var num_sides = randi() % (max_sides - min_sides + 1) + min_sides
@@ -286,12 +341,6 @@ func transform_vertices(vertices: PackedVector2Array, angle: float, offset: Vect
 	return PackedVector2Array(new_vals)
 
 
-func find_midpoint(vertices):
-	vertices = Geometry2D.convex_hull(vertices)
-	var sum = Vector2.ZERO
-	for vertex in vertices:
-		sum += vertex
-	return sum / vertices.size()
 
 
 func on_debug_polygons(boolean: bool):

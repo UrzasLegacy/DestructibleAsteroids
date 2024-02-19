@@ -9,6 +9,7 @@ func _ready():
 	Events.add_asteroid.connect(on_add_asteroid)
 	Events.debug_text.connect(on_debug_text)
 	Events.asteroid_died.connect(on_asteroid_died)
+	Events.draw_highlight.connect(highlight_poly)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed('debug1'):
@@ -32,11 +33,30 @@ func on_asteroid_died(polygon,pos,rot):
 	tween.tween_property(polygon_shape,"modulate:a", 0.0, 0.2)
 	tween.tween_callback(polygon_shape.queue_free)
 
+func on_draw_highlight(poly,highlight_polygon,pos):
+	pass
+
+func highlight_poly(poly: PackedVector2Array,highlight_polygon: PackedVector2Array,pos):
+	var highlight_array = Geometry2D.intersect_polygons(poly, highlight_polygon)
+	for highlight: PackedVector2Array in highlight_array:
+		if Geometry2D.is_polygon_clockwise(highlight):
+			continue
+		var polygon_shape = Polygon2D.new()
+		add_child(polygon_shape)
+		polygon_shape.position = pos
+		polygon_shape.polygon = highlight
+		polygon_shape.color = Color("RED")
+		var tween = get_tree().create_tween()
+		tween.tween_property(polygon_shape,"modulate:a", 0.0, 0.2).from(1.0)
+		tween.tween_callback(polygon_shape.queue_free)
 
 func on_add_asteroid(polygon,pos,rot,lin_vel,ang_vel):
-	var add_asteroid = asteroid_scene.instantiate() as RigidBody2D
+	var add_asteroid: Asteroid = asteroid_scene.instantiate()
 	add_child(add_asteroid)
-	var center_point = find_midpoint(polygon)
+	var center_point = add_asteroid.find_midpoint(polygon)
+	var area = add_asteroid.polygon_area_centroid(polygon).area
+	add_asteroid.starting_area = area
+	add_asteroid.instanced_asteroid = true
 	add_asteroid.linear_velocity = lin_vel
 	add_asteroid.angular_velocity = ang_vel
 	add_asteroid.center_of_mass = center_point

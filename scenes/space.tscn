@@ -1,11 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://8vkfjw5w05er"]
+[gd_scene load_steps=9 format=3 uid="uid://8vkfjw5w05er"]
 
-[ext_resource type="PackedScene" uid="uid://dgw8qw4qrayjn" path="res://scenes/asteroid.tscn" id="1_empm6"]
 [ext_resource type="Script" path="res://scenes/space.gd" id="1_oibin"]
-[ext_resource type="Texture2D" uid="uid://t5n5fdtcf6vv" path="res://assets/SpaceBackground2.png" id="2_rrifb"]
 [ext_resource type="PackedScene" uid="uid://blpu5qny7e604" path="res://scenes/ship.tscn" id="3_ih41q"]
 [ext_resource type="Script" path="res://scenes/camera.gd" id="4_27aw6"]
 [ext_resource type="FontFile" uid="uid://db8mjsa7ibkcu" path="res://assets/Kenney Mini Square.ttf" id="5_fbx2a"]
+[ext_resource type="PackedScene" uid="uid://bq6uqd6g06qdf" path="res://scenes/asteroid_cluster.tscn" id="6_a8xrr"]
+
+[sub_resource type="Gradient" id="Gradient_tf08f"]
+offsets = PackedFloat32Array(0, 0.930556, 0.990741)
+colors = PackedColorArray(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_rctbg"]
+gradient = SubResource("Gradient_tf08f")
+fill_from = Vector2(0.286325, 0.508547)
+fill_to = Vector2(0.435897, 0.470085)
+repeat = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_jnr00"]
 font = ExtResource("5_fbx2a")
@@ -17,25 +26,10 @@ script = ExtResource("1_oibin")
 z_index = -10
 texture_repeat = 2
 position = Vector2(-8261, -8228)
-texture = ExtResource("2_rrifb")
+texture = SubResource("GradientTexture2D_rctbg")
 centered = false
 region_enabled = true
 region_rect = Rect2(0, 0, 20000, 20000)
-
-[node name="Asteroid" parent="." instance=ExtResource("1_empm6")]
-position = Vector2(-315, -666)
-mass = 50.0
-asteroid_radius = 250.0
-
-[node name="Asteroid2" parent="." instance=ExtResource("1_empm6")]
-position = Vector2(1548, 427)
-mass = 50.0
-asteroid_radius = 500.0
-
-[node name="Asteroid3" parent="." instance=ExtResource("1_empm6")]
-position = Vector2(-735, 691)
-mass = 50.0
-asteroid_radius = 250.0
 
 [node name="Ship" parent="." instance=ExtResource("3_ih41q")]
 position = Vector2(291, 369)
@@ -53,3 +47,6 @@ offset_bottom = 23.0
 text = "Debug:
 "
 label_settings = SubResource("LabelSettings_jnr00")
+
+[node name="AsteroidCluster" parent="." instance=ExtResource("6_a8xrr")]
+position = Vector2(280, 225)

@@ -11,7 +11,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		current_zoom += Vector2(0.2,0.2)
 	if event.is_action_pressed("mw_down"):
 		current_zoom -= Vector2(0.2,0.2)
-	current_zoom = clamp(current_zoom,Vector2(0.5,0.5),Vector2(6,6))
+	current_zoom = clamp(current_zoom,Vector2(0.15,0.15),Vector2(6,6))
 
 func _process(delta):
 	if current_zoom != zoom:
